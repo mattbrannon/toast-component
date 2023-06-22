@@ -18,7 +18,7 @@ const ICONS_BY_VARIANT = {
   error: AlertOctagon,
 };
 
-function Toast({ message, setIsVisible, variant }) {
+function Toast({ removeFromStack, variant, id, children }) {
   const Icon = ICONS_BY_VARIANT[variant];
 
   return (
@@ -26,9 +26,9 @@ function Toast({ message, setIsVisible, variant }) {
       <div className={styles.iconContainer}>
         <Icon size={24} />
       </div>
-      <p className={styles.content}>{message}</p>
+      <p className={styles.content}>{children}</p>
       <button
-        onClick={() => setIsVisible(false)}
+        onClick={() => removeFromStack(id)}
         className={styles.closeButton}
       >
         <X size={24} />

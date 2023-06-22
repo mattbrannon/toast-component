@@ -2,7 +2,7 @@ import React from 'react';
 
 import Button from '../Button';
 import RadioButton from '../RadioButton';
-import Toast from '../Toast';
+import ToastShelf from '../ToastShelf';
 
 import styles from './ToastPlayground.module.css';
 
@@ -15,7 +15,19 @@ function ToastPlayground() {
 
   const [currentMessage, setCurrentMessage] = React.useState('');
 
-  const [isVisible, setIsVisible] = React.useState(false);
+  const [stack, setStack] = React.useState([]);
+
+  const addToStack = React.useCallback((message, variant) => {
+    if (!message.length) return;
+    const id = crypto.randomUUID();
+    setStack((stack) => [...stack, { message, variant, id }]);
+    setCurrentMessage('');
+    setCurrentVariant(VARIANT_OPTIONS[0]);
+  }, []);
+
+  const removeFromStack = React.useCallback((id) => {
+    setStack((stack) => stack.filter((toast) => toast.id !== id));
+  }, []);
 
   return (
     <div className={styles.wrapper}>
@@ -24,15 +36,15 @@ function ToastPlayground() {
         <h1>Toast Playground</h1>
       </header>
 
-      {isVisible && (
-        <Toast
-          message={currentMessage}
-          variant={currentVariant}
-          setIsVisible={setIsVisible}
-        />
-      )}
+      <ToastShelf stack={stack} removeFromStack={removeFromStack} />
 
-      <div className={styles.controlsWrapper}>
+      <form
+        className={styles.controlsWrapper}
+        onSubmit={(e) => {
+          e.preventDefault();
+          addToStack(currentMessage, currentVariant);
+        }}
+      >
         <div className={styles.row}>
           <label
             htmlFor="message"
@@ -46,6 +58,7 @@ function ToastPlayground() {
               id="message"
               className={styles.messageInput}
               onChange={(e) => setCurrentMessage(e.target.value)}
+              value={currentMessage}
             />
           </div>
         </div>
@@ -67,10 +80,10 @@ function ToastPlayground() {
         <div className={styles.row}>
           <div className={styles.label} />
           <div className={`${styles.inputWrapper} ${styles.radioWrapper}`}>
-            <Button onClick={() => setIsVisible(true)}>Pop Toast!</Button>
+            <Button type="submit">Pop Toast!</Button>
           </div>
         </div>
-      </div>
+      </form>
     </div>
   );
 }
