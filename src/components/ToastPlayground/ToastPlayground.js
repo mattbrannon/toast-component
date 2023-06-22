@@ -1,12 +1,22 @@
 import React from 'react';
 
 import Button from '../Button';
+import RadioButton from '../RadioButton';
+import ToastShelf from '../ToastShelf';
 
 import styles from './ToastPlayground.module.css';
-
-const VARIANT_OPTIONS = ['notice', 'warning', 'success', 'error'];
+import { useToast } from '../../hooks/useToast';
 
 function ToastPlayground() {
+  const {
+    currentVariant,
+    currentMessage,
+    addToStack,
+    setCurrentVariant,
+    setCurrentMessage,
+    VARIANT_OPTIONS,
+  } = useToast();
+
   return (
     <div className={styles.wrapper}>
       <header>
@@ -14,7 +24,15 @@ function ToastPlayground() {
         <h1>Toast Playground</h1>
       </header>
 
-      <div className={styles.controlsWrapper}>
+      <ToastShelf />
+
+      <form
+        className={styles.controlsWrapper}
+        onSubmit={(e) => {
+          e.preventDefault();
+          addToStack(currentMessage, currentVariant);
+        }}
+      >
         <div className={styles.row}>
           <label
             htmlFor="message"
@@ -24,38 +42,36 @@ function ToastPlayground() {
             Message
           </label>
           <div className={styles.inputWrapper}>
-            <textarea id="message" className={styles.messageInput} />
+            <textarea
+              id="message"
+              className={styles.messageInput}
+              onChange={(e) => setCurrentMessage(e.target.value)}
+              value={currentMessage}
+            />
           </div>
         </div>
 
         <div className={styles.row}>
           <div className={styles.label}>Variant</div>
-          <div
-            className={`${styles.inputWrapper} ${styles.radioWrapper}`}
-          >
-            <label htmlFor="variant-notice">
-              <input
-                id="variant-notice"
-                type="radio"
-                name="variant"
-                value="notice"
+          <div className={`${styles.inputWrapper} ${styles.radioWrapper}`}>
+            {VARIANT_OPTIONS.map((variant) => (
+              <RadioButton
+                onChange={() => setCurrentVariant(variant)}
+                checked={currentVariant === variant}
+                key={variant}
+                value={variant}
               />
-              notice
-            </label>
-
-            {/* TODO Other Variant radio buttons here */}
+            ))}
           </div>
         </div>
 
         <div className={styles.row}>
           <div className={styles.label} />
-          <div
-            className={`${styles.inputWrapper} ${styles.radioWrapper}`}
-          >
-            <Button>Pop Toast!</Button>
+          <div className={`${styles.inputWrapper} ${styles.radioWrapper}`}>
+            <Button type="submit">Pop Toast!</Button>
           </div>
         </div>
-      </div>
+      </form>
     </div>
   );
 }
