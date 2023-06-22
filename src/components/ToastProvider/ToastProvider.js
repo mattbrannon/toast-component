@@ -1,4 +1,5 @@
 import React from 'react';
+import { useEscapeKey } from '../../hooks/useEscapeKey';
 
 const ToastContext = React.createContext();
 
@@ -28,18 +29,7 @@ function ToastProvider({ children }) {
     setStack([]);
   }, []);
 
-  React.useEffect(() => {
-    const handleDismissAll = (e) => {
-      if (e.key === 'Escape') {
-        dismissAllMessages();
-      }
-    };
-    window.addEventListener('keydown', handleDismissAll);
-
-    return () => {
-      window.removeEventListener('keydown', handleDismissAll);
-    };
-  }, []);
+  useEscapeKey(dismissAllMessages);
 
   const value = React.useMemo(() => {
     return {
@@ -50,7 +40,6 @@ function ToastProvider({ children }) {
       setCurrentMessage,
       addToStack,
       removeFromStack,
-      // dismissAllMessages,
       VARIANT_OPTIONS,
     };
   }, [
@@ -61,7 +50,6 @@ function ToastProvider({ children }) {
     setCurrentMessage,
     addToStack,
     removeFromStack,
-    // dismissAllMessages,
     VARIANT_OPTIONS,
   ]);
 
