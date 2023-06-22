@@ -5,7 +5,7 @@ import RadioButton from '../RadioButton';
 import ToastShelf from '../ToastShelf';
 
 import styles from './ToastPlayground.module.css';
-import { useToast } from '../ToastProvider';
+import { useToast } from '../../hooks/useToast';
 
 function ToastPlayground() {
   const {

@@ -2,7 +2,7 @@ import React from 'react';
 
 import Toast from '../Toast';
 import styles from './ToastShelf.module.css';
-import { useToast } from '../ToastProvider';
+import { useToast } from '../../hooks/useToast';
 
 function ToastShelf() {
   const { stack } = useToast();

@@ -10,7 +10,7 @@ import {
 import VisuallyHidden from '../VisuallyHidden';
 
 import styles from './Toast.module.css';
-import { useToast } from '../ToastProvider';
+import { useToast } from '../../hooks/useToast';
 
 const ICONS_BY_VARIANT = {
   notice: Info,
