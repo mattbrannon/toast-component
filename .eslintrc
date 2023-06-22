@@ -1,0 +1,41 @@
+{
+  "env": {
+    "browser": true,
+    "node": true,
+    "es6": true
+  },
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  },
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "ecmaVersion": "latest",
+    "sourceType": "module"
+  },
+  "extends": ["eslint:recommended", "plugin:react/recommended"],
+  "plugins": ["react"],
+  "rules": {
+    "quotes": ["error", "single", { "avoidEscape": true }],
+    "no-var": "error",
+    "prefer-const": "error",
+    "no-empty": "warn",
+    "react/prop-types": "off",
+    "brace-style": ["error", "stroustrup"],
+    "semi": ["error", "always"],
+    "multiline-ternary": "off",
+    "no-unneeded-ternary": "error",
+    "indent": [
+      "error",
+      2,
+      {
+        "ignoredNodes": ["ConditionalExpression > *"],
+        "SwitchCase": 1
+      }
+    ],
+    "object-curly-spacing": ["error", "always"]
+  }
+}
