@@ -5,29 +5,17 @@ import RadioButton from '../RadioButton';
 import ToastShelf from '../ToastShelf';
 
 import styles from './ToastPlayground.module.css';
-
-const VARIANT_OPTIONS = ['notice', 'warning', 'success', 'error'];
+import { useToast } from '../ToastProvider';
 
 function ToastPlayground() {
-  const [currentVariant, setCurrentVariant] = React.useState(
-    VARIANT_OPTIONS[0]
-  );
-
-  const [currentMessage, setCurrentMessage] = React.useState('');
-
-  const [stack, setStack] = React.useState([]);
-
-  const addToStack = React.useCallback((message, variant) => {
-    if (!message.length) return;
-    const id = crypto.randomUUID();
-    setStack((stack) => [...stack, { message, variant, id }]);
-    setCurrentMessage('');
-    setCurrentVariant(VARIANT_OPTIONS[0]);
-  }, []);
-
-  const removeFromStack = React.useCallback((id) => {
-    setStack((stack) => stack.filter((toast) => toast.id !== id));
-  }, []);
+  const {
+    currentVariant,
+    currentMessage,
+    addToStack,
+    setCurrentVariant,
+    setCurrentMessage,
+    VARIANT_OPTIONS,
+  } = useToast();
 
   return (
     <div className={styles.wrapper}>
@@ -36,7 +24,7 @@ function ToastPlayground() {
         <h1>Toast Playground</h1>
       </header>
 
-      <ToastShelf stack={stack} removeFromStack={removeFromStack} />
+      <ToastShelf />
 
       <form
         className={styles.controlsWrapper}
