@@ -10,6 +10,7 @@ import {
 import VisuallyHidden from '../VisuallyHidden';
 
 import styles from './Toast.module.css';
+import { useToast } from '../ToastProvider';
 
 const ICONS_BY_VARIANT = {
   notice: Info,
@@ -18,7 +19,9 @@ const ICONS_BY_VARIANT = {
   error: AlertOctagon,
 };
 
-function Toast({ removeFromStack, variant, id, children }) {
+function Toast({ variant, id, children }) {
+  const { removeFromStack } = useToast();
+
   const Icon = ICONS_BY_VARIANT[variant];
 
   return (
@@ -26,10 +29,15 @@ function Toast({ removeFromStack, variant, id, children }) {
       <div className={styles.iconContainer}>
         <Icon size={24} />
       </div>
-      <p className={styles.content}>{children}</p>
+      <p className={styles.content}>
+        <VisuallyHidden>{variant} -</VisuallyHidden>
+        {children}
+      </p>
       <button
         onClick={() => removeFromStack(id)}
         className={styles.closeButton}
+        aria-label="Dismiss message"
+        aria-live="off"
       >
         <X size={24} />
         <VisuallyHidden>Dismiss message</VisuallyHidden>
